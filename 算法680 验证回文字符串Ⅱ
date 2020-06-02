@@ -1,0 +1,61 @@
+# 给定一个非空字符串 s，最多删除一个字符。判断是否能成为回文字符串。
+
+示例 1：
+输入: "aba"
+输出: True
+
+示例 2
+输入: "abca"
+输出: True
+解释: 你可以删除c字符。
+
+class Solution:
+    def validPalindrome(self, s: str) -> bool:
+        def check_point(low,high):
+            i, j = low, high
+            while i < j:
+                if s[i] != s[j]:
+                    return False
+                i += 1
+                j -= 1
+            return True
+        
+        low, high = 0, len(s)-1
+        while low < high:
+            if s[low] == s[high]:
+                low += 1
+                high -= 1
+            else:
+                return check_point(low,high-1) or check_point(low+1,high)
+        return True   
+
+个人代码：执行用时：196 ms
+         内存消耗：14.1 MB
+
+
+他人代码：执行用时：48ms
+
+
+class Solution:
+    def validPalindrome(self, s: str) -> bool:
+        if s == s[::-1]:
+            return True
+        
+        left = 0
+        right = len(s) - 1
+        step = int(len(s) / 2)
+        
+        while left < right:
+            if s[left:left+step] == s[right:right-step:-1]:
+                left += step
+                right -= step
+                continue
+            elif step > 1:
+                step = int(step/2)
+                continue
+                
+            temp1 = s[left:right]
+            temp2 = s[left+1:right+1]
+            return (temp1 == temp1[::-1]) or (temp2 == temp2[::-1])
+            
+ #巧用切片也能有助于节省执行用时
